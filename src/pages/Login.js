@@ -63,7 +63,6 @@ export default function Login() {
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <Page title="Login">
       <RootStyle>
         
 
@@ -98,6 +97,5 @@ export default function Login() {
           </ContentStyle>
         </Container>
       </RootStyle>
-    </Page>
   );
 }

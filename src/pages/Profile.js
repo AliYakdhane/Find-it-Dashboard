@@ -53,7 +53,7 @@ export default function Profile() {
       <div style={{display:'flex',justifyContent:'center'}} >
      
       <Info  useStyles={useTutorInfoStyles}>
-        <InfoTitle >Ali Yakdhane</InfoTitle>
+        <InfoTitle > { localStorage.getItem('userName')} </InfoTitle>
       </Info>
      </div> 
      <br/>

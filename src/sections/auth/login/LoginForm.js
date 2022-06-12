@@ -11,7 +11,6 @@ import axios from "axios";
 
 // component
 import Iconify from '../../../components/Iconify';
-import { dispatchLogin } from './authAction'
 // ----------------------------------------------------------------------
 const initialState = {
   email: "",
@@ -19,7 +18,6 @@ const initialState = {
 };
 export default function LoginForm() {
   const [user, setUser] = useState(initialState);
-  const dispatch = useDispatch();
 
   const history = useHistory();
   const { email, password } = user;
@@ -30,19 +28,19 @@ export default function LoginForm() {
   const handleSubmite = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`http://localhost:5000/user/login`, {
+      const res = await axios.post(`http://localhost:5000/admin/login`, {
         email,
         password,
       });
+      console.log(res)
       setUser({ ...user, err: "", success: res.data.msg });
-
+      localStorage.setItem("userName",res.data.userName)
+      localStorage.setItem("email",res.data.email)
       localStorage.setItem("firstLogin", true);
 
-      dispatch(dispatchLogin());
       history.push("/dashboard");
     } catch (err) {
-      err.response.data.msg &&
-        setUser({ ...user, err: err.response.data.msg, success: "" });
+        console.log('-----------------------mena 7ot msg error')
     }
   };
 
@@ -74,6 +72,7 @@ export default function LoginForm() {
   };
 
   return (
+    
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmite}>
         <Stack spacing={3}>

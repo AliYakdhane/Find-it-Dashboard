@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------
 
 const account = {
-  displayName: 'Ali Yakdhane',
-  email: 'Yakdhanali97@gmail.com',
+  displayName: localStorage.getItem('userName'),
+  email: localStorage.getItem('email'),
   photoURL: '/static/mock-images/avatars/avatar_default.jpg',
 };
 

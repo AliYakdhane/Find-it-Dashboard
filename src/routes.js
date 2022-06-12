@@ -18,7 +18,7 @@ export default function Routess() {
   return (
     <Router>
    <Switch>
-   <Route path="/login" component={Login} exact />
+   <Route path="/" component={Login} exact />
    <Router>
 
    <Switch style={{display:'flex',justifyContent:'center'}}>
@@ -26,7 +26,7 @@ export default function Routess() {
    <Route path="/users" component={User} exact /> 
    <Route path="/Account" component={Profile} exact /> 
 
-   <Route path="/" component={DashboardApp} exact /> 
+   <Route path="/dashboard" component={DashboardApp} exact /> 
    <Route path="/addCategory" component={FormBuilder} exact /> 
 
 </Switch></Router>

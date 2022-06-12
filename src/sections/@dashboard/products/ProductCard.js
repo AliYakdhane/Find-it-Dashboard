@@ -24,16 +24,16 @@ ShopProductCard.propTypes = {
   product: PropTypes.object,
 };
 const style = {
-  position: 'absolute',
+  position: 'fixed',
   top: '50%',
   left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
+  
+  maxWidth: '50%',
   borderRadius:'17px',
   bgcolor: 'background.paper',
   border: '1px solid #ddd',
   boxShadow: 24,
-  p: 4,
+  p: 0,
 };
 
 export default function ShopProductCard({ product }) {
@@ -55,6 +55,7 @@ export default function ShopProductCard({ product }) {
     {  categorys.map((val,key) => (
       <Stack spacing={2} sx={{ p: 2 }}>
       <Card margin='1rem' direction="row"  key={key}>
+        hi
       <Box  sx={{ pt: '100%', borderBottom:'1px solid #ddd' }}>
         <ProductImgStyle alt={name} src={val.image} />
       </Box>

@@ -4,6 +4,8 @@ import { styled } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
+import axios from 'axios';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +38,12 @@ UserListToolbar.propTypes = {
 };
 
 export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+
+    const [utilisateur, setUtilisateur] = useState([])
+
+  const deleteUser = (id) => {
+    axios.delete(`http://localhost:5000/user/delete/${id}`)
+  }
   return (
     <RootStyle
       sx={{

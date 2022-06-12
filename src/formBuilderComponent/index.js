@@ -94,7 +94,7 @@ class FormBuilder extends Component {
   }
 
   myForm(form){
-      //console.log(form);
+      console.log(form);
       const options = {
         url: 'http://localhost:5000/form',
         method: 'POST',

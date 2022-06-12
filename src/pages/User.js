@@ -9,7 +9,7 @@ import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
-import axios from 'axios'
+import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { LoadingButton } from '@mui/lab';
@@ -39,6 +39,7 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
+import { useEffect } from 'react';
 
 const initialState = {
   name: '',
@@ -46,8 +47,8 @@ const initialState = {
   password: '',
   cf_password: '',
   err: '',
-  success: ''
-}
+  success: '',
+};
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
@@ -94,7 +95,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 800,
-  borderRadius:'17px',
+  borderRadius: '17px',
   bgcolor: 'background.paper',
   border: '1px solid #ddd',
   boxShadow: 24,
@@ -165,54 +166,53 @@ export default function User() {
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
-  const [user, setUser] = useState(initialState)
+  const [user, setUser] = useState(initialState);
 
-  const {name, email, password,cf_password, err, success} = user
+  const { name, email, password, cf_password, err, success } = user;
 
-  const handleChangeInput = e => {
-      const {name, value} = e.target
-      setUser({...user, [name]:value, err: '', success: ''})
-  }
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value, err: '', success: '' });
+  };
 
+  const [utilisateur, setUtilisateur] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:5000/user/all_infor').then((res) => {
+      setUtilisateur(res.data);
+    });
+  }, []);
 
-
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (name && email && password) {
-    
-        setUser({ ...user });
-        axios
-          .post(`http://localhost:5000/user/register`, {
-            name,
-            email,
-            password:cf_password,
-          })
-          .then(res => {
-            setUser({
-              ...user,
-              name: '',
-              email: '',
-              password: '',
-              cf_password: '',
-             
-            });
-
-            toast.success(res.data.message);
-          })
-          .catch(err => {
-            setUser({
-              ...user,
-              name: '',
-              email: '',
-              password: '',
-              cf_password: '',
-      
-            });
-            console.log(err.response);
-            toast.error(err.response.data.errors);
+      setUser({ ...user });
+      axios
+        .post(`http://localhost:5000/user/register`, {
+          name,
+          email,
+          password: cf_password,
+        })
+        .then((res) => {
+          setUser({
+            ...user,
+            name: '',
+            email: '',
+            password: '',
+            cf_password: '',
           });
-      
-       
+
+          toast.success(res.data.message);
+        })
+        .catch((err) => {
+          setUser({
+            ...user,
+            name: '',
+            email: '',
+            password: '',
+            cf_password: '',
+          });
+          console.log(err.response);
+        });
     } else {
       toast.error('Please fill all fields');
     }
@@ -220,72 +220,86 @@ export default function User() {
 
   return (
     <Page title="User">
-   
-    <Container style={{width:'65rem',position:'sticky',marginTop:'7rem',left:'20%'}} >
-      
-       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{ width: '65rem', position: 'sticky', marginTop: '7rem', left: '20%' }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button style={{display:'flex',justifyContent:'flex-end'}} variant="contained" onClick={handleOpen} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+            variant="contained"
+            onClick={handleOpen}
+            to="#"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             New User
           </Button>
           <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <Box sx={style}>
-           
-                    <h3 className='text-2xl xl:text-3xl font-extrabold'>
-                      Add user 
-                    </h3>
-                    <br/>
-                  
-                    <form
-                    onSubmit={handleSubmit}
-style={{display:'flex',justifyContent:'center',flexDirection:'column'}}>
-                      
-                      <OutlinedInput 
-                     
-                      defaultValue="Small"
-                      size="xs"
-                    type="text" placeholder="Enter user's name" id="name"
-                      value={name} name="name" onChange={handleChangeInput}  />
-                    <br/> <br/>
-                     
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <Box sx={style}>
+                <h3 className="text-2xl xl:text-3xl font-extrabold">Add user</h3>
+                <br />
 
-                  
-                    
-                
-                      <OutlinedInput type="text" placeholder="Enter email address" id="email"
-                      value={email} name="email" onChange={handleChangeInput} />  <br/> <br/>          
-                      <OutlinedInput type="password" placeholder="Enter password" id="password"
-                      value={password} name="password" onChange={handleChangeInput} />  <br/> <br/>           
-                      
-                      <OutlinedInput type="password" placeholder="Confirm password" id="cf_password"
-                      value={cf_password} name="cf_password" onChange={handleChangeInput} /> <br/> <br/>
-                    
-                    
-                                 
-                                        <LoadingButton fullWidth size="large" type="submit" variant="contained">
-                                        <i className='fas fa-user-plus fa 1x w-6  -ml-2' />
-                                        <span className='ml-3'> Add user</span>
-                                      </LoadingButton>
-                    </form>
-              
-              
-            </Box>
-          </Fade>
-        </Modal>
-  
+                <form
+                  onSubmit={handleSubmit}
+                  style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}
+                >
+                  <OutlinedInput
+                    defaultValue="Small"
+                    size="xs"
+                    type="text"
+                    placeholder="Enter user's name"
+                    id="name"
+                    value={name}
+                    name="name"
+                    onChange={handleChangeInput}
+                  />
+                  <br /> <br />
+                  <OutlinedInput
+                    type="text"
+                    placeholder="Enter email address"
+                    id="email"
+                    value={email}
+                    name="email"
+                    onChange={handleChangeInput}
+                  />{' '}
+                  <br /> <br />
+                  <OutlinedInput
+                    type="password"
+                    placeholder="Enter password"
+                    id="password"
+                    value={password}
+                    name="password"
+                    onChange={handleChangeInput}
+                  />{' '}
+                  <br /> <br />
+                  <OutlinedInput
+                    type="password"
+                    placeholder="Confirm password"
+                    id="cf_password"
+                    value={cf_password}
+                    name="cf_password"
+                    onChange={handleChangeInput}
+                  />{' '}
+                  <br /> <br />
+                  <LoadingButton fullWidth size="large" type="submit" variant="contained">
+                    <i className="fas fa-user-plus fa 1x w-6  -ml-2" />
+                    <span className="ml-3"> Add user</span>
+                  </LoadingButton>
+                </form>
+              </Box>
+            </Fade>
+          </Modal>
         </Stack>
 
         <Card>
@@ -304,45 +318,49 @@ style={{display:'flex',justifyContent:'center',flexDirection:'column'}}>
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, email, avatarUrl, isVerified } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
-
-                    return (
+             
+{ utilisateur.map((val, key) => ( 
+                    
                       <TableRow
                         hover
-                        key={id}
+                        key={key}
                         tabIndex={-1}
                         role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
+                        
+                      > 
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox onChange={(event) => handleClick(event, name)} />
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
+                            <Avatar alt={name} src="nn" />
+                            
+                             
+                                <Typography variant="subtitle2" noWrap>
+                                  {val.name}
+                                </Typography>
+                              
+                            
                           </Stack>
-                        </TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                        <TableCell align="left">
-                          <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
-                            {sentenceCase(status)}
+                        </TableCell>  
+                            
+                        
+                  <TableCell style={{}} align="left" noWrap>{val.email}</TableCell>  
+                  <TableCell style={{}} align="left" noWrap>{val.role ? 'admin' : 'user'}</TableCell>  
+                  <TableCell style={{}} align="left" noWrap>   <Iconify style={{cursor:'pointer'}} icon="flat-color-icons:ok" color="blue" width={34} height={32} align="center" /></TableCell>  
+ <TableCell align="left">
+                          <Label variant="ghost" style={{backgroundColor:'green'}} >
+                            Active
                           </Label>
                         </TableCell>
+                      
 
                         <TableCell align="right">
                           <UserMoreMenu />
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
+                    ))}
+              
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />

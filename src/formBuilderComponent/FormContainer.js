@@ -1,25 +1,14 @@
-import React, {useState, Component } from 'react';
+import React, { Component } from 'react';
 import SingleField from './Types/SingleField';
 import SelectField from "./Types/SelectField";
 import CheckBoxes from './Types/CheckBoxes';
 import Preview from './Preview';
 import RadioButtons from "./Types/RadioButtons";
-import { useFormik, Form, FormikProvider } from 'formik';
-import { CFormInput } from "@coreui/react";
-import axios from 'axios';
-import Page from 'src/components/Page';
 import Paragraph from "./Types/Paragraph";
 import DurationPicker from "./Types/DurationPicker";
 import $ from "jquery";
-import 'jquery-ui-sortable';
-import { Container } from '@mui/material';
-window.jQuery = $;
-window.$ = $;
 
-require("jquery-ui-sortable");
-require("formBuilder");
 class FormContainer extends Component {
-    
     constructor(props){
         super(props);
         this.state = {
@@ -27,19 +16,12 @@ class FormContainer extends Component {
             fields : [],
             orders : [],
             change : false,
-            nameDuplicate: false,
-            category_img: '',
-            category_name: ''
+            nameDuplicate: false
         }
         this.popForm = this.popForm.bind(this);
         this.catchField = this.catchField.bind(this);
         this.resetStateOrder = this.resetStateOrder.bind(this);
         this.debugStateOrder = this.debugStateOrder.bind(this);
-        this.onChangeCategoryImage = this.onChangeCategoryImage.bind(this);
-        this.onChangeCategoryName = this.onChangeCategoryName.bind(this);
-
-        
-
     }
 
     componentWillMount(){
@@ -52,29 +34,7 @@ class FormContainer extends Component {
             });
         }
     }
-onChangeCategoryImage(e) {
-        this.setState({
-            category_img: e.target.value
-        });
-    }
-    onChangeCategoryName(e) {
-        this.setState({
-            category_name: e.target.value
-        });
-    }
-    onSubmit(e) {
-        e.preventDefault();
-        const obj = {
-            category_img: this.state.category_img,
-            category_name: this.state.category_name,
-           
-        };
-        console.log(obj);
-        axios.post('http://localhost:5000/category/addCateogry'+this.props.match.params.id, obj)
-            .then(res => console.log(res.data));
-        
-        this.props.history.push('/');
-    }
+
     resetStateOrder(){
         let order = [];
         let $ = window.$;
@@ -105,11 +65,7 @@ onChangeCategoryImage(e) {
 
     render() {
         return (
-            <Page title="Dashboard: category">
-
-            <Container style={{width:'65rem',position:'sticky',marginTop:'7rem',left:'30%'}} >
-
-         <div className='toolbox' ref={(c) => this._toolBoxContainer = c}>
+            <div className='toolbox' ref={(c) => this._toolBoxContainer = c}>
                 {
                     this.props.debug === true ?
                         <pre>
@@ -118,6 +74,7 @@ onChangeCategoryImage(e) {
                         :
                         <span hidden={true}></span>
                 }
+                
                 <Preview
                     previews={ this.props.custom }
                     fields={this.state.orders} id='previewModal' />
@@ -136,16 +93,6 @@ onChangeCategoryImage(e) {
                             }
                         </div>
                     </div>
-                    <br/>
-                    <form onSubmit={this.onSubmit}>
-                    <CFormInput type="file" placeholder="Enter email address" id="email"
-                    name="email"  value={this.state.category_img}
-                    onChange={this.onChangeCategoryImage} /> 
-                    <br/>         
-                <CFormInput type="text" placeholder="Enter category name" id="category_name"
-                    name="category_name"  value={this.state.category_name}
-                    onChange={this.onChangeCategoryName} />         <br/>  
-                    </form>
                     <div className={this.state.dragActive ? 'dragActive card-body' : 'card-body'}>
                         {/* {this.state.nameDuplicate ?
                             <p className="alert alert-danger">
@@ -179,7 +126,7 @@ onChangeCategoryImage(e) {
                         </div>
                     </div>
                 </div>
-            </div></Container></Page>
+            </div>
         );
     }
 
@@ -243,16 +190,10 @@ onChangeCategoryImage(e) {
 
     renderToolBoxItems(field, index){
         return (
-            <Page title="Dashboard: category">
-
-            <Container style={{width:'65rem',position:'sticky',marginTop:'7rem',left:'30%'}} >
-
             <div key={index} data-index={index}>
                 { this.renderTool(field, index) }
                <hr/>
             </div>
-            </Container>
-            </Page>
         )
     }
 
