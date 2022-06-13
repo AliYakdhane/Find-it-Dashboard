@@ -33,7 +33,7 @@ export default function Category() {
       <Typography variant="h4" gutterBottom>
         Category
       </Typography>
-      <Link to ='/dashboard/formbuilder'>
+      <Link to ='/addcategory'>
       <Button variant="contained" >
         New Category
       </Button></Link>
