@@ -65,7 +65,7 @@ export default function UserMoreMenu() {
             
                 <div  key={key} style={{display:'flex',justifyContent:'center',flexDirection:'row'}}>
                 <Iconify style={{cursor:'pointer'}} icon="flat-color-icons:ok" color="blue" width={34} height={32} onClick={() => {deleteCategory(val._id)}}/>
-                <Iconify  icon="bi:x-circle" color="red" width={34} height={32} />
+                <Iconify  icon="bi:x-circle" color="red" width={34} height={32} onClick={handleClose} />
 
 </div> 
                 </Box>

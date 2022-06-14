@@ -55,7 +55,7 @@ export default function ShopProductCard({ product }) {
     {  categorys.map((val,key) => (
       <Stack spacing={2} sx={{ p: 2 }}>
       <Card margin='1rem' direction="row"  key={key}>
-    
+        
       <Box  sx={{ pt: '100%', borderBottom:'1px solid #ddd' }}>
         <ProductImgStyle alt={name} src={val.image} />
       </Box>
@@ -87,7 +87,7 @@ export default function ShopProductCard({ product }) {
                 <br/>
                 <div style={{display:'flex',justifyContent:'center',flexDirection:'row'}}>
                 <Iconify style={{cursor:'pointer'}} icon="flat-color-icons:ok" color="blue" width={34} height={32} onClick={() => {deleteCategory(val._id)}}/>
-                <Iconify  icon="bi:x-circle" color="red" width={34} height={32} />
+                <Iconify  icon="bi:x-circle" color="red" width={34} height={32} onClick={handleClose}/>
 
 </div>
                 </Box>

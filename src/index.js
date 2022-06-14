@@ -3,7 +3,6 @@ import 'simplebar/src/simplebar.css';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { composeWithDevTools } from "redux-devtools-extension";
 
 //
 import App from './App';
@@ -21,7 +20,6 @@ import '../node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-add
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 // ----------------------------------------------------------------------
 window.$ = window.jQuery = window.jquery = $;
-
 
 ReactDOM.render(
   <HelmetProvider>
