@@ -106,6 +106,9 @@ export default function User() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [opene, setOpene] = React.useState(false);
+  const handleOpene = () => setOpene(true);
+  const handleClosee = () => setOpene(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -177,7 +180,7 @@ export default function User() {
 
   const [utilisateur, setUtilisateur] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:5000/user/all_infor').then((res) => {
+    axios.get('http://localhost:5000/utilisateur/ResponsablesAcademique').then((res) => {
       setUtilisateur(res.data);
     });
   }, []);
@@ -217,7 +220,9 @@ export default function User() {
       toast.error('Please fill all fields');
     }
   };
-
+  const deleteUser = (id) => {
+    axios.delete(`http://localhost:5000/utilisateur/ResponsablesAcademique/${id}`)
+  }
   return (
     <Page title="User">
       <Container style={{ width: '65rem', position: 'sticky', marginTop: '7rem', left: '20%' }}>
@@ -356,7 +361,38 @@ export default function User() {
                       
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                        <Stack direction="row" spacing={1} >
+              <Button  fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpene}>
+                <Iconify icon="fluent:delete-28-regular" color="#DF3E30" width={24} height={22}  />
+              </Button>
+                 
+              <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={opene}
+              onClose={handleClosee}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={opene}>
+                <Box sx={style}>
+                <h5 style={{color:'blue',display:'flex',justifyContent:'center'}}>Are you sure for delete this category!</h5>
+                <br/>
+                <br/>
+            
+                <div  key={key} style={{display:'flex',justifyContent:'center',flexDirection:'row'}}>
+                <Iconify style={{cursor:'pointer'}} icon="flat-color-icons:ok" color="blue" width={34} height={32} onClick={() => {deleteUser(val._id)}}/>
+                <Iconify  icon="bi:x-circle" color="red" width={34} height={32} onClick={handleClosee} />
+
+</div> 
+                </Box>
+                </Fade>
+                </Modal>      <Button fullWidth size="large" color="inherit" variant="outlined">
+                <Iconify icon="ant-design:edit-outlined" color="blue" width={24} height={22} />
+              </Button></Stack>
                         </TableCell>
                       </TableRow>
                     ))}

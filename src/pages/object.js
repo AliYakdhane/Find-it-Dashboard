@@ -19,7 +19,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Page from '../components/Page';
-import moment from 'moment';
+// import moment from 'moment';
 
 const useStyles = makeStyles(({ spacing }) => ({
   card: {
@@ -97,7 +97,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
       style={{textAlign:'center'}}
         className={cardHeaderShadowStyles.root}
         classes={cardHeaderStyles}
-        title={row.statut}
+        title={row.formInput.Name}
         subheader={''}
       />
       <CardContent className={classes.content}>
@@ -125,6 +125,18 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                 Date</Typography>
               </TableCell>
                 <TableCell align="right">{row.objectDate}</TableCell></div>
+                <div style={{display:'flex',justifyContent:'space-between'}}  component="th" scope="row" >
+                <TableCell component="th" scope="row">
+                <Typography>
+                Color</Typography>
+              </TableCell>
+                <TableCell align="right">{row.formInput.Color? row.formInput.Color:' is empty'}</TableCell></div>
+                <div style={{display:'flex',justifyContent:'space-between'}}  component="th" scope="row" >
+                <TableCell component="th" scope="row">
+                <Typography>
+                Description</Typography>
+              </TableCell>
+                <TableCell align="right">{row.formInput.Description? row.formInput.Description :"Empty"}</TableCell></div>
               </TableRow>
           </TableBody>
     

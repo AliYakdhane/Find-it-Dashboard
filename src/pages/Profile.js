@@ -60,10 +60,10 @@ export default function Profile() {
      <br/>
      <Stack spacing={3}>
      <Box container spacing={4} style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
-       <CFormInput  style={{marginRight:'5px'}} type="text" placeholder="Enter email address" id="email"
-        name="email" /> <br/>          
-       <CFormInput style={{marginLeft:'5px'}} type="text" placeholder="Enter name" id="name"
-        name="name" />  </Box>
+       <CFormInput  style={{marginRight:'5px'}} type="text" placeholder={ localStorage.getItem('email')} id="email"
+        name="email" disabled/> <br/>          
+       <CFormInput style={{marginLeft:'5px'}} type="text" placeholder={ localStorage.getItem('userName')} id="name"
+        name="name" disabled/>  </Box>
        <br/>          
        <Box container spacing={4} style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
        <CFormInput style={{marginRight:'5px'}} type="password" placeholder="Enter your  password" id="password"
