@@ -81,6 +81,7 @@ class FormContainer extends Component {
 
                 <div className="card card-default" style={this.ifDuplicated()}>
                     <div className="card-header">
+                        
                         <span className="pull-left">Form Items</span>
                         <div className="actions pull-right">
                             <button data-toggle="modal" data-target="#previewModal" className="btn btn-sm btn-dark">Mobile Preview</button>

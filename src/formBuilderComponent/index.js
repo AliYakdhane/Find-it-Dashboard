@@ -4,7 +4,7 @@ import ToolBox from './ToolBox';
 import FormContainer from './FormContainer';
 import './App.css';
 import axios from 'axios';
-
+import Page from '../components/Page' 
 window.jQuery = $;
 window.$ = $;
 
@@ -67,10 +67,18 @@ const myCustoms = [
 class FormBuilder extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="container">
+      <Page  title="List objects">
+       
+
+      <div className="row" align="center">
+        <div className="row" >
           <div className="row">
-            <div className="col-md-7">
+            <div style={{width:'27rem',marginLeft:'8rem'}}>
+               <br/>
+        <br/>
+        <br/>
+<br/>
+
               <FormContainer
                 loader={false}
                 debug={false}
@@ -80,12 +88,19 @@ class FormBuilder extends Component {
                 custom={myCustoms}
               />
             </div>
-            <div className="col-md-5">
+            
+            <div style={{maxWidth:'40%'}}>
+            <br/>
+        <br/>
+        <br/>
+<br/>
               <ToolBox custom={myCustoms} />
             </div>
+            
           </div>
         </div>
       </div>
+      </Page>
     );
   }
 
@@ -113,9 +128,9 @@ class FormBuilder extends Component {
     axios(options).then(async (response) => {
       var bodyCategory = new FormData();
       bodyCategory.append('formId', response.data._id);
-      bodyCategory.append('image', 'obj.category_img');
-      bodyCategory.append('name','obj.category_name');
-
+      bodyCategory.append('image', response.data.image);
+      bodyCategory.append('name', response.data.name);
+      let url = 'http://localhost:5000/category/addCateogry';
       let queryCategory = {
         method: 'post',
         baseURL: 'http://localhost:5000',
@@ -126,7 +141,11 @@ class FormBuilder extends Component {
         },
       };
       console.log(response.status);
-      await axios(queryCategory);
+      await axios.post(url, bodyCategory, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     });
   }
 }

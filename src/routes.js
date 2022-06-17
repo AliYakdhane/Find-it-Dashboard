@@ -15,6 +15,7 @@ import DashboardSidebar from './layouts/dashboard/DashboardSidebar';
 import {Switch, Route,  BrowserRouter as Router} from 'react-router-dom'
 import Profile from './pages/Profile';
 import object from './pages/object'
+import Getforms from './formBuilderComponent/GetForms';
 export default function Routess() {
   return (
     <Router>
@@ -27,6 +28,7 @@ export default function Routess() {
    <Route path="/users" component={User} exact /> 
    <Route path="/Account" component={Profile} exact /> 
    <Route path="/object" component={object} exact /> 
+   <Route path="/val" component={Getforms} exact /> 
 
    <Route path="/dashboard" component={DashboardApp} exact /> 
    <Route path="/addCategory" component={FormBuilder} exact /> 

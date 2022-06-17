@@ -36,17 +36,22 @@ let Tools = [
         title : 'Duration Picker',
         name : 'DURATION_PICKER',
         icon : 'fa fa-calendar'
+    },
+    {
+        title : 'Duration Picker',
+        name : 'DURATION_PICKER',
+        icon : 'fa fa-calendar'
     }
 ];
 class ToolBox extends Component {
     render() {
         return (
-            <div className="toolbox">
-                <div className="card card-default">
+            <div className="toolbox" style={{width:'25rem',marginLeft:'3rem'}} >
+                <div  className="card card-default" style={{maxWidth:'100%'}}>
                     <div className="card-header">
                         Drag to add a Field
                     </div>
-                    <div className="card-body toolbox-list p-0">
+                    <div className="card-body toolbox-list ">
                         <ul className="list-group" ref={(tools) => this._tools = tools}>
                             {
                                 Tools.map((types) => {
