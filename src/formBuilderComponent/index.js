@@ -4,7 +4,7 @@ import ToolBox from './ToolBox';
 import FormContainer from './FormContainer';
 import './App.css';
 import axios from 'axios';
-import Page from '../components/Page' 
+import Page from '../components/Page';
 window.jQuery = $;
 window.$ = $;
 
@@ -67,39 +67,36 @@ const myCustoms = [
 class FormBuilder extends Component {
   render() {
     return (
-      <Page  title="List objects">
-       
-
-      <div className="row" align="center">
-        <div className="row" >
+      <Page title="List objects">
+        <div className="row" align="center">
           <div className="row">
-            <div style={{width:'27rem',marginLeft:'8rem'}}>
-               <br/>
-        <br/>
-        <br/>
-<br/>
+            <div className="row">
+              <div style={{ width: '27rem', marginLeft: '8rem' }}>
+                <br />
+                <br />
+                <br />
+                <br />
 
-              <FormContainer
-                loader={false}
-                debug={false}
-                updateOnMount={true}
-                updateForm={this.updateForm}
-                onSave={this.myForm}
-                custom={myCustoms}
-              />
+                <FormContainer
+                  loader={false}
+                  debug={false}
+                  updateOnMount={true}
+                  updateForm={this.updateForm}
+                  onSave={this.myForm}
+                  custom={myCustoms}
+                />
+              </div>
+
+              <div style={{ maxWidth: '40%' }}>
+                <br />
+                <br />
+                <br />
+                <br />
+                <ToolBox custom={myCustoms} />
+              </div>
             </div>
-            
-            <div style={{maxWidth:'40%'}}>
-            <br/>
-        <br/>
-        <br/>
-<br/>
-              <ToolBox custom={myCustoms} />
-            </div>
-            
           </div>
         </div>
-      </div>
       </Page>
     );
   }
@@ -113,21 +110,16 @@ class FormBuilder extends Component {
   myForm(form) {
     console.log(form);
     const options = {
-      url: 'http://localhost:5000/form',
+      url: `http://localhost:5000/form/addForm/${localStorage.getItem('userId')}`,
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
       data: {
-        name: 'ali',
         formData: form,
       },
     };
 
     axios(options).then(async (response) => {
       var bodyCategory = new FormData();
-      bodyCategory.append('formId', response.data._id);
+      bodyCategory.append('formId', response.data.formBuilder.formId);
       bodyCategory.append('image', response.data.image);
       bodyCategory.append('name', response.data.name);
       let url = 'http://localhost:5000/category/addCateogry';

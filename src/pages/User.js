@@ -4,6 +4,8 @@ import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { showSuccessMsg, showErrMsg } from '../utils/notification/Notification';
+
 import Backdrop from '@mui/material/Backdrop';
 import * as React from 'react';
 import Modal from '@mui/material/Modal';
@@ -103,6 +105,8 @@ const style = {
 };
 
 export default function User() {
+  const [loading, setLoading] = useState(false);
+  const [callback, setCallback] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -180,8 +184,8 @@ export default function User() {
 
   const [utilisateur, setUtilisateur] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:5000/utilisateur/ResponsablesAcademique').then((res) => {
-      setUtilisateur(res.data);
+    axios.get(`http://localhost:5000/admin/getUsers/${localStorage.getItem('userId')}`).then((res) => {
+      setUtilisateur(res.data.users);
     });
   }, []);
 
@@ -190,7 +194,7 @@ export default function User() {
     if (name && email && password) {
       setUser({ ...user });
       axios
-        .post(`http://localhost:5000/user/register`, {
+        .post(`http://localhost:5000/admin/addUser/${localStorage.getItem('userId')}`, {
           name,
           email,
           password: cf_password,
@@ -221,11 +225,25 @@ export default function User() {
     }
   };
   const deleteUser = (id) => {
-    axios.delete(`http://localhost:5000/utilisateur/ResponsablesAcademique/${id}`)
-  }
+    console.info('firas:', id);
+    let query = {
+      method: 'delete',
+      url: `http://localhost:5000/admin/deleteUser/${localStorage.getItem('userId')}`,
+      data: { userId: id },
+    };
+    setLoading(true);
+    axios(query);
+    setLoading(false);
+    setCallback(!callback);
+  };
   return (
     <Page title="User">
       <Container style={{ width: '65rem', position: 'sticky', marginTop: '7rem', left: '20%' }}>
+        <div>
+          {err && showErrMsg(err)}
+          {success && showSuccessMsg(success)}
+          {loading && <h3>Loading.....</h3>}
+        </div>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             User
@@ -323,80 +341,103 @@ export default function User() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-             
-{ utilisateur.map((val, key) => ( 
-                    
-                      <TableRow
-                        hover
-                        key={key}
-                        tabIndex={-1}
-                        role="checkbox"
-                        
-                      > 
-                        <TableCell padding="checkbox">
-                          <Checkbox onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src="nn" />
-                            
-                             
-                                <Typography variant="subtitle2" noWrap>
-                                  {val.name}
-                                </Typography>
-                              
-                            
-                          </Stack>
-                        </TableCell>  
-                            
-                        
-                  <TableCell style={{}} align="left" noWrap>{val.email}</TableCell>  
-                  <TableCell style={{}} align="left" noWrap>{val.role ? 'admin' : 'user'}</TableCell>  
-                  <TableCell style={{}} align="left" noWrap>   <Iconify style={{cursor:'pointer'}} icon="flat-color-icons:ok" color="blue" width={34} height={32} align="center" /></TableCell>  
- <TableCell align="left">
-                          <Label variant="ghost" style={{backgroundColor:'green'}} >
-                            Active
-                          </Label>
-                        </TableCell>
-                      
+                  {utilisateur.map((val, key) => (
+                    <TableRow hover key={key} tabIndex={-1} role="checkbox">
+                      <TableCell padding="checkbox">
+                        <Checkbox onChange={(event) => handleClick(event, name)} />
+                      </TableCell>
+                      <TableCell component="th" scope="row" padding="none">
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Avatar alt={name} src="nn" />
 
-                        <TableCell align="right">
-                        <Stack direction="row" spacing={1} >
-              <Button  fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpene}>
-                <Iconify icon="fluent:delete-28-regular" color="#DF3E30" width={24} height={22}  />
-              </Button>
-                 
-              <Modal
-              aria-labelledby="transition-modal-title"
-              aria-describedby="transition-modal-description"
-              open={opene}
-              onClose={handleClosee}
-              closeAfterTransition
-              BackdropComponent={Backdrop}
-              BackdropProps={{
-                timeout: 500,
-              }}
-            >
-              <Fade in={opene}>
-                <Box sx={style}>
-                <h5 style={{color:'blue',display:'flex',justifyContent:'center'}}>Are you sure for delete this category!</h5>
-                <br/>
-                <br/>
-            
-                <div  key={key} style={{display:'flex',justifyContent:'center',flexDirection:'row'}}>
-                <Iconify style={{cursor:'pointer'}} icon="flat-color-icons:ok" color="blue" width={34} height={32} onClick={() => {deleteUser(val._id)}}/>
-                <Iconify  icon="bi:x-circle" color="red" width={34} height={32} onClick={handleClosee} />
+                          <Typography variant="subtitle2" noWrap>
+                            {val.name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
 
-</div> 
-                </Box>
-                </Fade>
-                </Modal>      <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="ant-design:edit-outlined" color="blue" width={24} height={22} />
-              </Button></Stack>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-              
+                      <TableCell style={{}} align="left" noWrap>
+                        {val.email}
+                      </TableCell>
+                      <TableCell style={{}} align="left" noWrap>
+                        {'user'}
+                      </TableCell>
+                      <TableCell style={{}} align="left" noWrap>
+                        {' '}
+                        <Iconify
+                          style={{ cursor: 'pointer' }}
+                          icon="flat-color-icons:ok"
+                          color="blue"
+                          width={34}
+                          height={32}
+                          align="center"
+                        />
+                      </TableCell>
+                      <TableCell align="left">
+                        <Label variant="ghost" style={{ backgroundColor: 'green' }}>
+                          {val.isConnected ? 'connected' : 'disconnected'}
+                        </Label>
+                      </TableCell>
+
+                      <TableCell align="right">
+                        <Stack direction="row" spacing={1}>
+                          <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpene}>
+                            <Iconify icon="fluent:delete-28-regular" color="#DF3E30" width={24} height={22} />
+                          </Button>
+                          <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            open={opene}
+                            onClose={handleClosee}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                              timeout: 500,
+                            }}
+                          >
+                            <Fade in={opene}>
+                              <Box sx={style}>
+                                <h5 style={{ color: 'blue', display: 'flex', justifyContent: 'center' }}>
+                                  Are you sure for delete this category!
+                                </h5>
+                                <br />
+                                <br />
+
+                                <div
+                                  key={key}
+                                  style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }}
+                                >
+                                  <Iconify
+                                    style={{ cursor: 'pointer' }}
+                                    icon="flat-color-icons:ok"
+                                    color="blue"
+                                    width={34}
+                                    height={32}
+                                    disabled={loading}
+                                    onClick={(id) => {
+                                      console.info(id);
+                                      deleteUser(val._id);
+                                    }}
+                                  />
+                                  <Iconify
+                                    icon="bi:x-circle"
+                                    color="red"
+                                    width={34}
+                                    height={32}
+                                    onClick={handleClosee}
+                                  />
+                                </div>
+                              </Box>
+                            </Fade>
+                          </Modal>{' '}
+                          <Button fullWidth size="large" color="inherit" variant="outlined">
+                            <Iconify icon="ant-design:edit-outlined" color="blue" width={24} height={22} />
+                          </Button>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />

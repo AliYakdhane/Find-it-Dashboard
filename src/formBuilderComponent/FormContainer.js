@@ -74,8 +74,10 @@ class FormContainer extends Component {
                         :
                         <span hidden={true}></span>
                 }
-                
-                <Preview
+                               <input type='text' id='' placeholder='enter category name'
+value='' />      
+                <input type='file' id=''
+value='' />               <Preview
                     previews={ this.props.custom }
                     fields={this.state.orders} id='previewModal' />
 

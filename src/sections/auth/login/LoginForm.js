@@ -37,6 +37,8 @@ export default function LoginForm() {
       localStorage.setItem("userName",res.data.userName)
       localStorage.setItem("email",res.data.email)
       localStorage.setItem("firstLogin", true);
+      localStorage.setItem("userId",res.data.userId)
+
 
       history.push("/dashboard");
     } catch (err) {
