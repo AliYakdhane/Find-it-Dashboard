@@ -58,10 +58,25 @@ export default function Profile() {
   };
   const updateInfor = () => {
     try {
-      axios.put(`http://localhost:5000/admin/update/${localStorage.getItem('userId')}`, {
+      let query = {
         name: name ? name : categorys.name,
         email: email ? email : categorys.email,
-      });
+      };
+      var data;
+      if (query.name) {
+        data = {};
+        data['name'] = query.name;
+      }
+      if (query.name) {
+        data = {};
+        data['email'] = query.email;
+      }
+
+      if (data)
+        axios.put(`http://localhost:5000/admin/update/${localStorage.getItem('userId')}`, {
+          name: name ? name : categorys.name,
+          email: email ? email : categorys.email,
+        });
 
       setData({ ...data, err: '', success: 'Updated Success!' });
     } catch (err) {

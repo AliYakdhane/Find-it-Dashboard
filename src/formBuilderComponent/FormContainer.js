@@ -74,7 +74,7 @@ class FormContainer extends Component {
                         :
                         <span hidden={true}></span>
                 }
-                               <input type='text' id='' placeholder='enter category name'
+                               <input type='text' id='' placeholder='Pls add category name'
 value='' />      
                 <input type='file' id=''
 value='' />               <Preview
