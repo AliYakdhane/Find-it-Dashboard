@@ -7,7 +7,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@
 import MenuPopover from '../../components/MenuPopover';
 // mocks_
 import account from '../../_mock/account';
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +22,6 @@ const MENU_OPTIONS = [
     icon: 'eva:person-fill',
     linkTo: '/account',
   },
-
 ];
 
 // ----------------------------------------------------------------------
@@ -38,17 +37,15 @@ export default function AccountPopover() {
   };
 
   const handleClose = () => {
-
     setOpen(null);
   };
-const Logoutt = () => {
-  localStorage.clear();
-  history.push('/')
-
-}
+  const Logoutt = () => {
+    localStorage.clear();
+    history.push('/');
+  };
   return (
     <>
-    <br/>
+      <br />
       <IconButton
         ref={anchorRef}
         onClick={handleOpen}
@@ -84,12 +81,14 @@ const Logoutt = () => {
           },
         }}
       >
-      <br/>
+        <br />
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-         { localStorage.getItem('userName')}          </Typography>
+            {localStorage.getItem('userName')}{' '}
+          </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {localStorage.getItem('email')}          </Typography>
+            {localStorage.getItem('email')}{' '}
+          </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
